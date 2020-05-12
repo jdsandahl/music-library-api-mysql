@@ -6,6 +6,9 @@ const artistController = require('../controllers/artists');
 const router = express.Router();
 
 router.post('/', artistController.create);
-router.get('/', artistController.listAll);
+
+router.get('/', artistController.getAllArtists);
+
+router.get('/:artistId', artistController.getArtistById);
 
 module.exports = router;
