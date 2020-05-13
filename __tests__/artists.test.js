@@ -105,6 +105,20 @@ describe('/artists', () => {
             });
           });
       });
+      
+      it('updates artist genre by id', (done) => {
+        const artist = artists[0];          
+        request(app)
+          .patch(`/artists/${artist.id}`)
+          .send({ name: 'Killswitch Engage' })
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            Artist.findByPk(artist.id, { raw: true }).then((updatedArtist) => {
+              expect(updatedArtist.name).to.equal('Killswitch Engage');
+              done();
+            });
+          });   
+      });
 
       it('returns a 404 if the artist does not exist', (done) => {
         request(app)
