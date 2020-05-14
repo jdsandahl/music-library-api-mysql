@@ -32,3 +32,15 @@ exports.updateArtist = (req, res) => {
     }
   });
 };
+
+exports.deleteArtist = (req, res) => {
+  const { artistId } = req.params;
+
+  Artist.destroy({ where: { id: artistId } }).then(deletedArtist => {
+    if (!deletedArtist) {
+      res.status(404).json({ error: 'The artist could not be found.' });
+    } else {
+      res.status(204).json(deletedArtist);
+    }
+  });
+};
