@@ -14,6 +14,7 @@ router.patch('/:artistId', artistController.updateArtist);
 router.delete('/:artistId', artistController.deleteArtist);
 
 router.post('/:artistId/albums', albumController.createAlbum);
+router.get('/:artistId/albums', albumController.getAlbumsByArtist);
 
 
 
