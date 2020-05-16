@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../src/app');
 const { Artist, Album, Song } = require('../src/sequelize');
 
-xdescribe('/songs', () => {
+describe('/songs', () => {
   let artist;
   let album;
 
@@ -38,7 +38,7 @@ xdescribe('/songs', () => {
   });
 
   describe('POST /album/:albumId/song', () => {
-    xit('creates a new song under an album', (done) => {
+    it('creates a new song under an album', (done) => {
       request(app)
         .post(`/album/${album.id}/song`)
         .send({
