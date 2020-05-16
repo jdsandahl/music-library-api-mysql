@@ -71,10 +71,11 @@ describe('/albums', () => {
 describe('with albums in the database', () => {
   let albums;
   beforeEach((done) => {
+    //console.log({artistId: artist.id});
     Promise.all([
-      Album.create({ name: 'testAlbum1', year: 2020, artist: artist.id, }),
-      Album.create({ name: 'testAlbum2', year: 2020, artist: artist.id, }),
-      Album.create({ name: 'testAlbum3', year: 2020, artist: artist.id, }),
+      Album.create({ name: 'testAlbum1', year: 2020, artistId: artist.id }),
+      Album.create({ name: 'testAlbum2', year: 2020, artistId: artist.id }),
+      Album.create({ name: 'testAlbum3', year: 2020, artistId: artist.id }),
     ]).then((documents) => {
       albums = documents;
       done();
@@ -83,12 +84,18 @@ describe('with albums in the database', () => {
 
   describe('GET artists/:artistId/albums', () => {
     it('gets all albums by an artist', (done) => {
+      //console.log("artist",artist.id);
       request(app)
         .get(`/artists/${artist.id}/albums`)
         .then((res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.name).to.equal(album.name);
-          expect(res.body.year).to.equal(album.year);
+          expect(res.body.length).to.equal(3);
+          //console.log(res.body);
+          res.body.forEach((album) => { 
+            const expected = albums.find((a) => a.id === album.id);
+            expect(album.name).to.equal(expected.name);
+            expect(album.year).to.equal(expected.year);
+          });
           done();
         });
     });
@@ -104,8 +111,5 @@ describe('with albums in the database', () => {
     });
   });
 });
-
-
-
 
 });
