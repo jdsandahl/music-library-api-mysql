@@ -56,4 +56,48 @@ describe('/songs', () => {
         });
     });
   });
+
+ describe('with songs in the database', () => {
+   let songs;
+   beforeEach((done) => {
+
+    Promise.all([
+      Song.create({ name: 'testSong1', albumId: album.id, artistId: artist.id }),
+      Song.create({ name: 'testSong2', albumId: album.id, artistId: artist.id }),
+      Song.create({ name: 'testSong3', albumId: album.id, artistId: artist.id }),
+    ]).then((documents) => {
+      songs = documents;
+      done();
+    });
+   });
+
+   describe('GET album/:albumId/all-tracks', () => {
+     it('gets all songs on an album', (done) => {
+        request(app)
+          .get(`/album/${album.id}/all-tracks`)
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body.length).to.equal(3);
+            res.body.forEach((song) => {
+              const expected = songs.find((s) => s.id === song.id);
+              expect(song.name).to.equal(expected.name);
+              expect(song.albumId).to.equal(album.id);
+              expect(song.artistId).to.equal(artist.id);
+            });
+            done();
+          });
+      });
+
+      it('returns a 404 if the album does not exist', (done) => {
+        request(app)
+          .get(`/album/12345/all-tracks`)
+          .then((res) => {
+            expect(res.status).to.equal(404);
+            expect(res.body.error).to.equal('The album could not be found.');
+            done();
+          });
+      });
+   });
+ });
+
 });
