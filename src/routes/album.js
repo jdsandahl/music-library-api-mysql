@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/:albumId', albumController.getAlbumById);
 router.patch('/:albumId', albumController.updateAlbumById);
+router.delete('/:albumId', albumController.deleteAlbum);
 
 router.post('/:albumId/song', songController.createSong);
 

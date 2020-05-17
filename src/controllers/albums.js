@@ -73,3 +73,17 @@ exports.updateAlbumById = (req, res) => {
     }
   });
 };
+
+exports.deleteAlbum = (req, res) => {
+  const { albumId } = req.params;
+
+  Album.findByPk(albumId).then((album) => {
+    if(!album) {
+      res.status(404).json({ error: 'The album could not be found.' });
+    } else {
+      Album.destroy({ where: { id: albumId } }).then((deletedArtist) => {
+        res.status(204).json(deletedArtist);
+      });
+    }
+  });
+};
