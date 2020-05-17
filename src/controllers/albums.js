@@ -18,7 +18,6 @@ exports.createAlbum = (req, res) => {
   });
 };
 
-//NOW PASSING E2E and Unit Tests
 exports.getAlbumsByArtist = (req, res) => {
   const { artistId } = req.params;
 

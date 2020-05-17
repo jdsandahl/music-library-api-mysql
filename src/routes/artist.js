@@ -6,18 +6,23 @@ const albumController = require('../controllers/albums');
 
 const router = express.Router();
 
-router.post('/', artistController.create);
-router.get('/', artistController.getAllArtists);
+router
+  .route('/')
+  .post(artistController.create)
+  .get(artistController.getAllArtists);
 
-router.get('/:artistId', artistController.getArtistById);
-router.patch('/:artistId', artistController.updateArtist);
-router.delete('/:artistId', artistController.deleteArtist);
+router
+  .route('/:artistId')
+  .get(artistController.getArtistById)
+  .patch(artistController.updateArtist)
+  .delete(artistController.deleteArtist);
 
-router.post('/:artistId/albums', albumController.createAlbum);
-router.get('/:artistId/albums', albumController.getAlbumsByArtist);
+router
+  .route('/:artistId/albums')
+  .post(albumController.createAlbum)
+  .get(albumController.getAlbumsByArtist);
 
 //POSSIBLE UNECESSARY ENDPOINT/REQUEST
 router.get('/:artistId/albums/:albumId', albumController.getSingleAlbumByArtist);
-
 
 module.exports = router;

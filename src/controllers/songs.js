@@ -14,7 +14,6 @@ exports.createSong = (req, res) => {
         albumId: album.id,
         artistId: album.artistId,
       };
-      //console.log(songData);
       Song.create(songData).then(song => {
         res.status(201).json(song);
       });

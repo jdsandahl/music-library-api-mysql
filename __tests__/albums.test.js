@@ -150,11 +150,6 @@ describe('/albums', () => {
       });
     });
 
-    //might be better to place this within album routes
-    describe('PATCH artists/:artistId/albums/:albumId', () => {
-      xit('updates album name by ')
-    });
-
     describe('GET album/:albumId', () => {
       it('gets an album by album id', (done) => {
         const album = albums[0];
@@ -210,6 +205,5 @@ describe('/albums', () => {
           });
       });
     });
-
   });
 });
