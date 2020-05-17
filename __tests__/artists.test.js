@@ -106,7 +106,7 @@ describe('/artists', () => {
           });
       });
       
-      it('updates artist genre by id', (done) => {
+      it('updates artist name by id', (done) => {
         const artist = artists[0];          
         request(app)
           .patch(`/artists/${artist.id}`)
