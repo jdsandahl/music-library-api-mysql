@@ -33,3 +33,29 @@ exports.getAlbumTracks = (req, res) => {
     }
   });
 };
+
+exports.updateSong = (req, res) => {
+  const { songId } = req.params;
+
+  Song.update(req.body, { where: { id: songId } }).then(([rowsUpdated]) => {
+    if(!rowsUpdated){
+      res.status(404).json({ error: 'The song could not be found.'});
+    } else {
+      res.status(200).json(rowsUpdated);
+    }
+  });
+};
+
+exports.deleteSong = (req, res) => {
+  const { songId } = req.params;
+
+  Song.findByPk(songId).then(song => {
+    if(!song) {
+      res.status(404).json({ error: 'The song could not be found.'});
+    } else {
+      Song.destroy({ where: { id: songId } }).then((deletedSong) => {
+        res.status(204).json(deletedSong);
+      });
+    }
+  });
+};

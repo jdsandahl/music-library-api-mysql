@@ -71,7 +71,7 @@ describe('/songs', () => {
     });
    });
 
-   describe('GET album/:albumId/all-tracks', () => {
+   describe('GET /album/:albumId/all-tracks', () => {
      it('gets all songs on an album', (done) => {
         request(app)
           .get(`/album/${album.id}/all-tracks`)
@@ -98,6 +98,46 @@ describe('/songs', () => {
           });
       });
    });
- });
 
+    describe('PATCH /song/:songId', () => {
+      it('updates song name by id', (done) => {
+        const song = songs[0];
+        request(app)
+          .patch(`/song/${song.id}`)
+          .send({ name: 'The song that never ends' })
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            Song.findByPk(song.id, { raw: true }).then((updatedSong) => {
+              expect(updatedSong.name).to.equal('The song that never ends');
+              done();
+            });
+          });
+      });
+    });
+
+    describe('DELETE /song/:songId', () => {
+      it('deletes a song from the database by id', (done) => {
+       const song = songs[0];
+       request(app)
+        .delete(`/song/${song.id}`)
+        .then((res) => {
+          expect(res.status).to.equal(204);
+          Song.findByPk(song.id, { raw: true }).then((deletedSong) => {
+            expect(deletedSong).to.equal(null);
+            done();
+          });
+        }); 
+      });
+
+      it('returns a 404 error if the song id does not exist', (done) => {
+         request(app)
+          .delete('/song/99999')
+          .then((res) => {
+            expect(res.status).to.equal(404);
+            expect(res.body.error).to.equal('The song could not be found.');
+            done(); 
+          });
+      });
+    });
+ });
 });
