@@ -111,22 +111,8 @@ describe('/albums', () => {
           });
       });
     });
-  
-    describe('GET album/:albumId', () => {
-      it('gets an album by album id', (done) => {
-        const album = albums[0];
-        request(app)
-          .get(`/album/${album.id}`)
-          .then((res) => {
-            expect(res.status).to.equal(200);
-            expect(res.body.name).to.equal(album.name);
-            expect(res.body.year).to.equal(album.year);
-            expect(res.body.id).to.equal(album.id);
-            done();
-          });
-      });
-    });
 
+    //POSSIBLE UNECESSARY ENDPOINT/REQUEST
     describe('GET artists/:artistId/albums/:albumId', () => {
       it('gets a single album by artist and album id', (done) => {
         const album = albums[0];
@@ -167,6 +153,37 @@ describe('/albums', () => {
     //might be better to place this within album routes
     describe('PATCH artists/:artistId/albums/:albumId', () => {
       xit('updates album name by ')
+    });
+
+    describe('GET album/:albumId', () => {
+      it('gets an album by album id', (done) => {
+        const album = albums[0];
+        request(app)
+          .get(`/album/${album.id}`)
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body.name).to.equal(album.name);
+            expect(res.body.year).to.equal(album.year);
+            expect(res.body.id).to.equal(album.id);
+            done();
+          });
+      });
+    });
+
+    describe('PATCH album/:albumId', () => {
+      it('updates an album by album id', (done) => {
+        const album = albums[0];
+        request(app)
+          .patch(`/album/${album.id}`)
+          .send({ year: 2019 })
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            Album.findByPk(album.id, { raw: true }).then((updatedAlbum) => {
+              expect(updatedAlbum.year).to.equal(2019);
+              done();
+            });
+          });
+      });
     });
 
   });

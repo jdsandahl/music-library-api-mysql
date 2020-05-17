@@ -5,7 +5,8 @@ const albumController = require('../controllers/albums');
 
 const router = express.Router();
 
-router.get('/:albumId', albumController.getAlbumById); //route not testing proper
+router.get('/:albumId', albumController.getAlbumById);
+router.patch('/:albumId', albumController.updateAlbumById);
 
 router.post('/:albumId/song', songController.createSong);
 

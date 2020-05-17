@@ -31,6 +31,7 @@ exports.getAlbumsByArtist = (req, res) => {
   });
 };
 
+//POSSIBLE UNECESSARY ENDPOINT
 exports.getSingleAlbumByArtist = (req, res) => {
   const { artistId, albumId } = req.params;
 
@@ -57,6 +58,18 @@ exports.getAlbumById = (req, res) => {
       res.status(404).json({ error: 'The album could not be found.' });
     } else {
       res.status(200).json(album);
+    }
+  });
+};
+
+exports.updateAlbumById = (req, res) => {
+  const { albumId } = req.params;
+
+  Album.update(req.body, { where: { id: albumId } }).then(([rowsUpdated]) => {
+    if(!rowsUpdated) {
+      res.status(404).json({ error: 'The album could not be found.' });
+    } else {
+      res.status(200).json(rowsUpdated);
     }
   });
 };

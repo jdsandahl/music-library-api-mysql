@@ -16,7 +16,7 @@ router.delete('/:artistId', artistController.deleteArtist);
 router.post('/:artistId/albums', albumController.createAlbum);
 router.get('/:artistId/albums', albumController.getAlbumsByArtist);
 
-//route not testing properly
+//POSSIBLE UNECESSARY ENDPOINT/REQUEST
 router.get('/:artistId/albums/:albumId', albumController.getSingleAlbumByArtist);
 
 
