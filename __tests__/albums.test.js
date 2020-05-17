@@ -112,12 +112,26 @@ describe('/albums', () => {
       });
     });
   
-    //NOT CURRENTLY WORKING - Error ECONNREFUSED error
+    describe('GET album/:albumId', () => {
+      it('gets an album by album id', (done) => {
+        const album = albums[0];
+        request(app)
+          .get(`/album/${album.id}`)
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body.name).to.equal(album.name);
+            expect(res.body.year).to.equal(album.year);
+            expect(res.body.id).to.equal(album.id);
+            done();
+          });
+      });
+    });
+
     describe('GET artists/:artistId/albums/:albumId', () => {
       it('gets a single album by artist and album id', (done) => {
         const album = albums[0];
         request(app)
-          .get(`artists/${artist.id}/albums/${album.id}`)
+          .get(`/artists/${artist.id}/albums/${album.id}`)
           .then((res) => {
             expect(res.status).to.equal(200);
             expect(res.body.name).to.equal(album.name);
@@ -128,7 +142,8 @@ describe('/albums', () => {
           });
       });
 
-      xit('returns a 404 if the artist does not exist', (done) => {
+      it('returns a 404 if the artist does not exist', (done) => {
+        const album = albums[0];
         request(app)
           .get(`/artists/12345/albums/${album.id}`)
           .then((res) => {
@@ -138,7 +153,7 @@ describe('/albums', () => {
           });
       });
 
-      xit('returns a 404 if the album does not exist', (done) => {
+      it('returns a 404 if the album does not exist', (done) => {
         request(app)
           .get(`/artists/${artist.id}/albums/99999`)
           .then((res) => {
@@ -149,7 +164,7 @@ describe('/albums', () => {
       });
     });
 
-
+    //might be better to place this within album routes
     describe('PATCH artists/:artistId/albums/:albumId', () => {
       xit('updates album name by ')
     });

@@ -48,3 +48,15 @@ exports.getSingleAlbumByArtist = (req, res) => {
     }
   });
 };
+
+exports.getAlbumById = (req, res) => {
+  const { albumId } = req.params;
+
+  Album.findByPk(albumId).then(album => {
+    if(!album) {
+      res.status(404).json({ error: 'The album could not be found.' });
+    } else {
+      res.status(200).json(album);
+    }
+  });
+};
