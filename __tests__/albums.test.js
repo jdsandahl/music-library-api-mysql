@@ -193,6 +193,19 @@ describe('/albums', () => {
             });
           });
       });
+
+      it('returns a 404 if the album does not exist', (done) => {
+        request(app)
+          .patch('/album/12345')
+          .send({ name: 'Psychedelic Rock' })
+          .then((res) => {
+            expect(res.status).to.equal(404);
+            expect(res.body.error).to.equal('The album could not be found.');
+            done();
+          });
+      });
+
+
     });
 
     describe('DELETE album/:albumId', () => {

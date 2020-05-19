@@ -61,16 +61,34 @@ exports.getAlbumById = (req, res) => {
   });
 };
 
-exports.updateAlbumById = (req, res) => {
+exports.updateAlbumById = async (req, res) => {
   const { albumId } = req.params;
 
-  Album.update(req.body, { where: { id: albumId } }).then(([rowsUpdated]) => {
+  /*Album.update(req.body, { where: { id: albumId } }).then(([rowsUpdated]) => {
     if(!rowsUpdated) {
       res.status(404).json({ error: 'The album could not be found.' });
     } else {
       res.status(200).json(rowsUpdated);
     }
+  });*/
+/*
+  Album.findByPk(albumId).then((album) => {
+    if(!album){
+      res.status(404).json({ error: 'The album could not be found.' });
+    } else {
+      Album.update(req.body, {where: { id: albumId } }).then((rowsUpdated) => {
+        res.status(200).json(rowsUpdated);
+      });
+    }
   });
+*/
+  try {
+    const album = await Album.findByPk(albumId);
+    const updatedAlbum = await Album.update(req.body, {where: {id: album.id } });
+    await res.status(200).json(updatedAlbum);
+  } catch {
+    await res.status(404).json({ error: 'The album could not be found.' });
+  }
 };
 
 exports.deleteAlbum = (req, res) => {
