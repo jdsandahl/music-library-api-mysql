@@ -166,7 +166,7 @@ describe('/albums', () => {
     });
 
     describe('PATCH album/:albumId', () => {
-      it('updates an album by album id', (done) => {
+      it('updates an album year by album id', (done) => {
         const album = albums[0];
         request(app)
           .patch(`/album/${album.id}`)
@@ -175,6 +175,20 @@ describe('/albums', () => {
             expect(res.status).to.equal(200);
             Album.findByPk(album.id, { raw: true }).then((updatedAlbum) => {
               expect(updatedAlbum.year).to.equal(2019);
+              done();
+            });
+          });
+      });
+
+      it('updates an album name by album id', (done) => {
+        const album = albums[0];
+        request(app)
+          .patch(`/album/${album.id}`)
+          .send({ name: 'B-sides' })
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            Album.findByPk(album.id, { raw: true }).then((updatedAlbum) => {
+              expect(updatedAlbum.name).to.equal('B-sides');
               done();
             });
           });

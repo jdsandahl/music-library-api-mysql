@@ -4,10 +4,9 @@ const { Song } = require('../sequelize');
 
 exports.createSong = async (req, res) => {
   const { albumId } = req.params;
-
   try {
     const album = await Album.findByPk(albumId);
-    const songData = await {
+    const songData = {
       name: req.body.name,
       albumId: album.id,
       artistId: album.artistId,
@@ -19,19 +18,18 @@ exports.createSong = async (req, res) => {
   };
 };
 
-exports.getAlbumTracks = (req, res) => {
+exports.getAlbumTracks = async (req, res) => {
   const { albumId } = req.params;
-
-  Album.findByPk(albumId).then(song => {
-    if(!song){
-      res.status(404).json({ error: 'The album could not be found.'});
-    } else {
-      Song.findAll({ where: { albumId } }).then(songs => res.status(200).json(songs));
-    }
-  });
+  try {
+    const album = await Album.findByPk(albumId);
+    const songs = await Song.findAll({ where: { albumId: album.id } });
+    res.status(200).json(songs);
+  } catch {
+    res.status(404).json({ error: 'The album could not be found.'});
+  };
 };
 
-exports.updateSong = (req, res) => {
+exports.updateSong = async (req, res) => {
   const { songId } = req.params;
 
   Song.update(req.body, { where: { id: songId } }).then(([rowsUpdated]) => {
@@ -41,6 +39,13 @@ exports.updateSong = (req, res) => {
       res.status(200).json(rowsUpdated);
     }
   });
+/*
+  try {
+    const [rowsUpdated] = await Song.update(req.body, { where: { id: songId } });
+    res.status(200).json(rowsUpdated);
+  } catch {
+    res.status(404).json({ error: 'The song could not be found.'});
+  };*/
 };
 
 exports.deleteSong = (req, res) => {
