@@ -2,7 +2,7 @@
 const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../src/app');
-const { Artist, Album, Song } = require('../src/sequelize');
+const { Artist, Album } = require('../src/sequelize');
 
 describe('/albums', () => {
   let artist;
@@ -11,7 +11,6 @@ describe('/albums', () => {
     try {
       await Artist.sequelize.sync();
       await Album.sequelize.sync();
-    //  await Song.sequelize.sync();
     } catch (err) {
       console.log(err);
     }
@@ -21,7 +20,6 @@ describe('/albums', () => {
     try {
       await Artist.destroy({ where: {} });
       await Album.destroy({ where: {} });
-    //  await Song.destroy({ where: {} });
       artist = await Artist.create({
         name: 'Tame Impala',
         genre: 'Rock',
@@ -73,7 +71,6 @@ describe('/albums', () => {
   describe('with albums in the database', () => {
     let albums;
     beforeEach((done) => {
-      //console.log({artistId: artist.id});
       Promise.all([
         Album.create({ name: 'testAlbum1', year: 2020, artistId: artist.id }),
         Album.create({ name: 'testAlbum2', year: 2020, artistId: artist.id }),
@@ -86,13 +83,11 @@ describe('/albums', () => {
 
     describe('GET artists/:artistId/albums', () => {
       it('gets all albums by an artist', (done) => {
-        //console.log("artist",artist.id);
         request(app)
           .get(`/artists/${artist.id}/albums`)
           .then((res) => {
             expect(res.status).to.equal(200);
             expect(res.body.length).to.equal(3);
-            //console.log(res.body);
             res.body.forEach((album) => { 
               const expected = albums.find((a) => a.id === album.id);
               expect(album.name).to.equal(expected.name);
