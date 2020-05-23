@@ -17,10 +17,10 @@ const setupDatabase = () => {
   const Album = AlbumModel(sequelize, Sequelize);
   const Song = SongModel(sequelize, Sequelize);
 
-  Album.belongsTo(Artist, { as: 'artist' , constraints: false });
+  Album.belongsTo(Artist, { as: 'artist' });
 
-  Song.belongsTo(Artist, { as: 'artist', constraints: false });
-  Song.belongsTo(Album, { as: 'album', constraints: false }); // likely don't need to make false
+  Song.belongsTo(Artist, { as: 'artist' });
+  Song.belongsTo(Album, { as: 'album' }); // likely don't need to make false
 
   sequelize.sync({ alter: true });
   return {
