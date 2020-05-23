@@ -9,10 +9,18 @@ exports.createAlbum = (req, res) => {
     if (!artist){
       res.status(404).json({ error: 'The artist could not be found.' });
     } else {
-      Album.create(req.body).then(album => {
-        album.setArtist(artistId).then(linkedAlbum => {
+      /*Album.create(req.body).then(album => {
+        album.setArtist(artist.id).then(linkedAlbum => {
           res.status(201).json(linkedAlbum);
         });
+      });*/
+      albumData = {
+        name: req.body.name,
+        year: req.body.year,
+        artistId: artist.id,
+      };
+      Album.create(albumData).then(album => {
+        res.status(201).json(album);
       });
     }
   });

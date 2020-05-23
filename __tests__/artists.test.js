@@ -1,13 +1,15 @@
 /* eslint-disable no-console */
 const { expect } = require('chai');
 const request = require('supertest');
-const { Artist } = require('../src/sequelize');
+const { Artist, Album, Song } = require('../src/sequelize');
 const app = require('../src/app');
 
 describe('/artists', () => {
   before(async () => {
     try {
       await Artist.sequelize.sync();
+    //  await Album.sequelize.sync();
+    //  await Song.sequelize.sync();
     } catch (err) {
       console.log(err);
     }
@@ -16,6 +18,8 @@ describe('/artists', () => {
   beforeEach(async () => {
     try {
       await Artist.destroy({ where: {} });
+    //  await Album.destroy({ where: {} }); 
+    //  await Song.destroy({ where: {} });
     } catch (err) {
       console.log(err);
     }

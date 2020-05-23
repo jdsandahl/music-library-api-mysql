@@ -2,7 +2,7 @@
 const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../src/app');
-const { Artist, Album } = require('../src/sequelize');
+const { Artist, Album, Song } = require('../src/sequelize');
 
 describe('/albums', () => {
   let artist;
@@ -11,6 +11,7 @@ describe('/albums', () => {
     try {
       await Artist.sequelize.sync();
       await Album.sequelize.sync();
+    //  await Song.sequelize.sync();
     } catch (err) {
       console.log(err);
     }
@@ -20,6 +21,7 @@ describe('/albums', () => {
     try {
       await Artist.destroy({ where: {} });
       await Album.destroy({ where: {} });
+    //  await Song.destroy({ where: {} });
       artist = await Artist.create({
         name: 'Tame Impala',
         genre: 'Rock',
