@@ -42,7 +42,7 @@ describe('/songs', () => {
       request(app)
         .post(`/album/${album.id}/song`)
         .send({
-          artist: artist.id,
+          //artist: artist.id,
           name: 'Solitude Is Bliss',
         })
         .then((res) => {
@@ -52,6 +52,13 @@ describe('/songs', () => {
           expect(res.body.name).to.equal('Solitude Is Bliss');
           expect(res.body.artistId).to.equal(artist.id);
           expect(res.body.albumId).to.equal(album.id);
+          
+          Song.findByPk(songId, {raw: true}).then((song) => {
+            expect(song.id).to.equal(songId);
+            expect(song.name).to.equal('Solitude Is Bliss');
+            expect(song.artistId).to.equal(artist.id);
+            expect(song.albumId).to.equal(album.id);
+          });
           done();
         });
     });
