@@ -17,10 +17,14 @@ const setupDatabase = () => {
   const Album = AlbumModel(sequelize, Sequelize);
   const Song = SongModel(sequelize, Sequelize);
 
+  Artist.hasMany(Album, { foreignKey: 'albumId'});
+  Artist.hasMany(Song, { foreignKey: 'songId'});
+  
   Album.belongsTo(Artist, { as: 'artist' });
-
+  Album.hasMany(Song, { foreignKey: 'songId'});
+  
   Song.belongsTo(Artist, { as: 'artist' });
-  Song.belongsTo(Album, { as: 'album' }); // likely don't need to make false
+  Song.belongsTo(Album, { as: 'album' });
 
   sequelize.sync({ alter: true });
   return {
