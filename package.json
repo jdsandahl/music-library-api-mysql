@@ -10,9 +10,8 @@
     "sequelize": "^5.21.7"
   },
   "scripts": {
-    "dev": "nodemon -r dotenv/config index.js",
     "prestart": "node scripts/create-database.js",
-    "start": "node index.js",
+    "start": "nodemon -r dotenv/config index.js",
     "pretest": "node scripts/create-database.js test",
     "test": "NODE_ENV=test nyc --reporter=lcov mocha __tests__/**/*.js --exit --recursive --timeout 60000 --file ./test-setup.js",
     "posttest": "node scripts/drop-database.js"
